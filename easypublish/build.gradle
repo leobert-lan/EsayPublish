@@ -1,6 +1,8 @@
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'signing'
+    id 'maven-publish'
 }
 
 java {
@@ -10,4 +12,107 @@ java {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //gradle sdk
+    implementation gradleApi()
+}
+
+
+def ARTIFACT_ID = 'easy-publish'
+def VERSION_NAME = '0.0.1.4'
+def GROUP_ID = 'io.github.leobert-lan'
+
+
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+properties.load(inputStream)
+//        uri(project.rootDir.parent + "/local_repo")
+def ACCOUNT = properties.get("nexus_user", "")
+def PASSWORD = properties.get("nexus_pwd", "")
+
+//apply plugin: 'maven'
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java.srcDirs
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+afterEvaluate {
+    publishing {
+        publications {
+            mavenAndroid(MavenPublication) {
+                groupId GROUP_ID
+                artifactId ARTIFACT_ID
+                version VERSION_NAME
+                artifact sourcesJar
+                artifact javadocJar
+                artifact('build/libs/easypublish.jar')
+                // 配置 pom 文件格式
+                pom {
+
+                    groupId = GROUP_ID
+                    artifactId = ARTIFACT_ID
+                    version = VERSION_NAME
+//                上面是自己加的
+
+                    packaging = 'jar'
+                    name = ARTIFACT_ID
+                    description = ARTIFACT_ID
+                    url = siteUrl
+//                licenses {
+//                    license {
+//                        name='The Apache Software License, Version 2.0'
+//                        url='http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+                    licenses {
+                        license {
+                            name = 'Apache 2.0'
+                            url = 'https://github.com/leobert-lan/EsayPublish/blob/master/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'leobert'
+                            name = 'leobert'
+                            email = 'leobert.l@hotmail.com'
+                        }
+                    }
+                    scm {
+                        connection = siteUrl
+                        developerConnection = gitUrl
+                        url = siteUrl
+                    }
+                }
+            }
+        }
+        // 配置远程仓库
+        repositories {
+            maven {
+                url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username ACCOUNT
+                    password PASSWORD
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.mavenAndroid
+    }
 }
