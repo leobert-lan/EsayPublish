@@ -1,0 +1,4 @@
+include ':java-lib-demo'
+include ':android-lib-demo'
+include ':easypublish'
+rootProject.name = "EasyPublish"
