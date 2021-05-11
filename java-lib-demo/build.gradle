@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'osp.leobert.maven.publish'
 }
 
 java {
@@ -10,4 +11,29 @@ java {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+EasyPublish {
+    sourceSet = sourceSets.main.java.srcDirs
+    docExcludes = [" osp/leobert/maven/java_lib_demo/*"]
+    artifact {
+        value = "build/libs/java-lib-demo.jar"
+    }
+
+    developer {
+        id = 'leobert'
+        name = 'leobert'
+        email = 'leobert.l@hotmail.com'
+    }
+
+    groupId = "io.github.leobert-lan"
+    artifactId = "java-demo"
+    version = "1.0.0"
+    packaging = "jar"
+    siteUrl = "https://github.com/leobert-lan/EsayPublish"
+    gitUrl = "https://github.com/leobert-lan/EsayPublish.git"
+    licenseName = 'Apache 2.0'
+    licenseUrl = 'https://github.com/leobert-lan/EsayPublish/blob/master/LICENSE'
+
+    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
 }
