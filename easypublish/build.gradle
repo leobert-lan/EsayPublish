@@ -18,7 +18,7 @@ dependencies {
 
 
 def ARTIFACT_ID = 'easy-publish'
-def VERSION_NAME = '0.0.1.4'
+def VERSION_NAME = '1.0.0'
 def GROUP_ID = 'io.github.leobert-lan'
 
 
@@ -63,12 +63,6 @@ afterEvaluate {
                 artifact('build/libs/easypublish.jar')
                 // 配置 pom 文件格式
                 pom {
-
-                    groupId = GROUP_ID
-                    artifactId = ARTIFACT_ID
-                    version = VERSION_NAME
-//                上面是自己加的
-
                     packaging = 'jar'
                     name = ARTIFACT_ID
                     description = ARTIFACT_ID
