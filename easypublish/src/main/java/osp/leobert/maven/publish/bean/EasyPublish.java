@@ -1,7 +1,5 @@
 package osp.leobert.maven.publish.bean;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -84,6 +82,8 @@ public class EasyPublish {
 
     public String mavenRepoUrl;
 
+    public boolean needSign = true;
+
     public void developer(Closure closures) {
         if (closures == null) return;
         Developer developer = new Developer();
@@ -105,6 +105,7 @@ public class EasyPublish {
     @Override
     public String toString() {
         return "EasyPublish{" + end +
+                "needSign=" + needSign + end +
                 "sourceSet=" + sourceSet + end +
                 "description=" + description + end +
                 ", docClassPathAppend='" + docClassPathAppend + '\'' + end +

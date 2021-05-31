@@ -31,8 +31,9 @@ class EasyPublishPlugin : Plugin<Project> {
 
             project.apply {
                 it.plugin("maven-publish")
+                if (easyPublish.needSign)
                 it.plugin("signing")
-                Logger.info("apply plugin 'maven-publish' and 'signing' to ${project.name}")
+                Logger.info("apply plugin 'maven-publish'${" and 'signing'".takeIf { easyPublish.needSign }?:""} to ${project.name}")
             }
 
             publishExtension = Util.publishingExtension(project)
