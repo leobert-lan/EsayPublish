@@ -18,7 +18,7 @@ dependencies {
 
 
 def ARTIFACT_ID = 'easy-publish'
-def VERSION_NAME = '1.1.0'
+def VERSION_NAME = '1.1.1'
 def GROUP_ID = 'io.github.leobert-lan'
 
 
