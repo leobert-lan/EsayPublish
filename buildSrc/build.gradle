@@ -1,0 +1,31 @@
+buildscript {
+    ext.kotlin_version = "1.4.21"
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+apply plugin: "kotlin"
+
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //gradle sdk
+    implementation gradleApi()
+}
+
+
+repositories {
+    mavenCentral()
+    google()
+    jcenter()
+}
+

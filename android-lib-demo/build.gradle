@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'osp.leobert.maven.publish'
+//    id 'osp.leobert.maven.publish'
 }
+
+apply plugins:"debugPublish"
 
 android {
     compileSdkVersion 30
