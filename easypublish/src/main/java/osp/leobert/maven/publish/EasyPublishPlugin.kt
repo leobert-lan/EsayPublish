@@ -108,7 +108,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 //            options.addStringOption('charSet', 'UTF-8')
             }
 
-            configPublishing(project, localProperties, sourcesJarTask, javadocJarTask, isAndroid)
+            configPublishing(project, localProperties, sourcesJarTask, javadocJarTask)
 
 
         }
@@ -186,7 +186,6 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
             properties: Properties?,
             sourcesJarTask: Task?,
             javadocJarTask: Task?,
-            isAndroid: Boolean,
     ) {
         val publishingExtension = publishExtension
         if (publishingExtension == null) {
