@@ -48,24 +48,24 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 
         try {
             val appPluginClass: Class<Plugin<*>> =
-                Class.forName("com.android.build.gradle.AppPlugin") as Class<Plugin<*>>
+                    Class.forName("com.android.build.gradle.AppPlugin") as Class<Plugin<*>>
             val libraryPluginClass: Class<Plugin<*>> =
-                Class.forName("com.android.build.gradle.LibraryPlugin") as Class<Plugin<*>>
+                    Class.forName("com.android.build.gradle.LibraryPlugin") as Class<Plugin<*>>
             val testPluginClass: Class<Plugin<*>> =
-                Class.forName("com.android.build.gradle.TestPlugin") as Class<Plugin<*>>
+                    Class.forName("com.android.build.gradle.TestPlugin") as Class<Plugin<*>>
 
 
             plugins.withType(appPluginClass) {
                 configureAndroidScopeMappings(project.configurations,
-                    pluginConvention.conf2ScopeMappings)
+                        pluginConvention.conf2ScopeMappings)
             }
             plugins.withType(libraryPluginClass) {
                 configureAndroidScopeMappings(project.configurations,
-                    pluginConvention.conf2ScopeMappings)
+                        pluginConvention.conf2ScopeMappings)
             }
             plugins.withType(testPluginClass) {
                 configureAndroidScopeMappings(project.configurations,
-                    pluginConvention.conf2ScopeMappings)
+                        pluginConvention.conf2ScopeMappings)
             }
         } catch (ex: ClassNotFoundException) {
         }
@@ -119,7 +119,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 
         return try {
             project.tasks.create(
-                "javadocJar", Jar::class.java
+                    "javadocJar", Jar::class.java
             ).apply {
                 this.classifier = "javadoc"
                 this.from(javadoc?.destinationDir)
@@ -134,12 +134,12 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
     private fun addSourceJar(project: Project, easyPublish: EasyPublish): Task? {
         return try {
             project.tasks.create(
-                "sourcesJar", Jar::class.java
+                    "sourcesJar", Jar::class.java
             ).takeIfInstance<AbstractArchiveTask>()?.apply {
                 this.classifier = "sources"
                 this.from(
-                    easyPublish.sourceSet
-                        ?: throw IllegalArgumentException("must config sourceSet in EasyPublish")
+                        easyPublish.sourceSet
+                                ?: throw IllegalArgumentException("must config sourceSet in EasyPublish")
                 )
             }
         } catch (e: Exception) {
@@ -158,7 +158,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
     private fun addJavaDocTaskForAndroid(project: Project): Task? {
         return try {
             project.tasks.create(
-                "javadoc", Javadoc::class.java
+                    "javadoc", Javadoc::class.java
             ).apply {
                 this.options.encoding("UTF-8")
 
@@ -166,7 +166,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
                     this.classpath.plus(docClassPathAppend)
                 }
                 easyPublish.sourceSet
-                    ?: throw IllegalArgumentException("must config sourceSet in EasyPublish")
+                        ?: throw IllegalArgumentException("must config sourceSet in EasyPublish")
                 easyPublish.docExcludes?.let { exclude ->
                     this.exclude(exclude)
                     exclude.forEach { e ->
@@ -182,11 +182,11 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
     }
 
     private fun configPublishing(
-        project: Project,
-        properties: Properties?,
-        sourcesJarTask: Task?,
-        javadocJarTask: Task?,
-        isAndroid: Boolean,
+            project: Project,
+            properties: Properties?,
+            sourcesJarTask: Task?,
+            javadocJarTask: Task?,
+            isAndroid: Boolean,
     ) {
         val publishingExtension = publishExtension
         if (publishingExtension == null) {
@@ -196,8 +196,8 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 
         publishingExtension.publications {
             it.register<MavenPublication>(
-                "easyMavenPublish",
-                MavenPublication::class.java
+                    "easyMavenPublish",
+                    MavenPublication::class.java
             ) { publication ->
 
                 if (!easyPublish.notStandardJavaComponent)
@@ -206,7 +206,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 
                 publication.groupId = Util.require("EasyPublish.groupId", easyPublish.groupId)
                 publication.artifactId =
-                    Util.require("EasyPublish.artifactId", easyPublish.artifactId)
+                        Util.require("EasyPublish.artifactId", easyPublish.artifactId)
                 publication.version = Util.require("EasyPublish.version", easyPublish.version)
 
                 javadocJarTask?.let { t ->
@@ -226,21 +226,24 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
                 publication.pom { pom ->
                     pom.packaging = Util.require("EasyPublish.packaging", easyPublish.packaging)
                     pom.name.set(
-                        Util.require("EasyPublish.artifactId", easyPublish.artifactId)
+                            Util.require("EasyPublish.artifactId", easyPublish.artifactId)
                     )
                     pom.description.set(
-                        Util.require("EasyPublish.description", easyPublish.description)
+                            Util.require("EasyPublish.description", easyPublish.description)
+                    )
+                    pom.url.set(
+                            Util.require("EasyPublish.siteUrl", easyPublish.siteUrl)
                     )
                     pom.licenses { licenses ->
 
                         licenses.license { license ->
 
                             license.name.set(
-                                Util.require("EasyPublish.licenseName", easyPublish.licenseName)
+                                    Util.require("EasyPublish.licenseName", easyPublish.licenseName)
                             )
 
                             license.url.set(
-                                Util.require("EasyPublish.licenseUrl", easyPublish.licenseUrl)
+                                    Util.require("EasyPublish.licenseUrl", easyPublish.licenseUrl)
                             )
                         }
                     }
@@ -256,13 +259,13 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 
                     pom.scm { scm ->
                         scm.connection.set(
-                            Util.require("EasyPublish.siteUrl", easyPublish.siteUrl)
+                                Util.require("EasyPublish.siteUrl", easyPublish.siteUrl)
                         )
                         scm.developerConnection.set(
-                            Util.require("EasyPublish.gitUrl", easyPublish.gitUrl)
+                                Util.require("EasyPublish.gitUrl", easyPublish.gitUrl)
                         )
                         scm.url.set(
-                            Util.require("EasyPublish.siteUrl", easyPublish.siteUrl)
+                                Util.require("EasyPublish.siteUrl", easyPublish.siteUrl)
                         )
                     }
 
@@ -278,7 +281,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
         publishingExtension.repositories {
             it.maven { repo ->
                 repo.url = URI.create(
-                    Util.require("EasyPublish.mavenRepoUrl", easyPublish.mavenRepoUrl) ?: ""
+                        Util.require("EasyPublish.mavenRepoUrl", easyPublish.mavenRepoUrl) ?: ""
                 )
                 val account = properties?.get("nexus_user")?.toString()
                 val password = properties?.get("nexus_pwd")?.toString()
@@ -289,14 +292,14 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
             }
         }
         signExtension?.sign(
-            publishingExtension.publications.findByName("easyMavenPublish")
+                publishingExtension.publications.findByName("easyMavenPublish")
         )
     }
 
     private val scopeMapping = mapOf<String, String?>(
-        "api" to "compile",
-        "implementation" to "compile",
-        "compile" to "compile"
+            "api" to "compile",
+            "implementation" to "compile",
+            "compile" to "compile"
     )
 
     private fun applyPomDeps(pom: MavenPom, project: Project) {
@@ -324,29 +327,29 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
     }
 
     private fun configureAndroidScopeMappings(
-        configurations: ConfigurationContainer,
-        mavenScopeMappings: Conf2ScopeMappingContainer,
+            configurations: ConfigurationContainer,
+            mavenScopeMappings: Conf2ScopeMappingContainer,
     ) {
         mavenScopeMappings.addMapping(COMPILE_PRIORITY,
-            configurations.getByName(JavaPlugin.API_CONFIGURATION_NAME),
-            Conf2ScopeMappingContainer.COMPILE)
+                configurations.getByName(JavaPlugin.API_CONFIGURATION_NAME),
+                Conf2ScopeMappingContainer.COMPILE)
         mavenScopeMappings.addMapping(COMPILE_PRIORITY,
-            configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME),
-            Conf2ScopeMappingContainer.COMPILE)
+                configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME),
+                Conf2ScopeMappingContainer.COMPILE)
         mavenScopeMappings.addMapping(RUNTIME_PRIORITY,
-            configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME),
-            Conf2ScopeMappingContainer.RUNTIME)
+                configurations.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME),
+                Conf2ScopeMappingContainer.RUNTIME)
         mavenScopeMappings.addMapping(TEST_COMPILE_PRIORITY,
-            configurations.getByName(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME),
-            Conf2ScopeMappingContainer.TEST)
+                configurations.getByName(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME),
+                Conf2ScopeMappingContainer.TEST)
         mavenScopeMappings.addMapping(TEST_RUNTIME_PRIORITY,
-            configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME),
-            Conf2ScopeMappingContainer.TEST)
+                configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME),
+                Conf2ScopeMappingContainer.TEST)
     }
 
     private fun addConventionObject(
-        project: ProjectInternal,
-        mavenFactory: MavenFactory,
+            project: ProjectInternal,
+            mavenFactory: MavenFactory,
     ): MavenPluginConvention {
         val mavenConvention = MavenPluginConvention(project, mavenFactory)
         val convention = project.convention
