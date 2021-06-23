@@ -4,7 +4,7 @@ plugins {
 //    id 'osp.leobert.maven.publish'
 }
 
-apply plugins:"debugPublish"
+apply plugin:"debugEasyPublish"
 
 android {
     compileSdkVersion 30

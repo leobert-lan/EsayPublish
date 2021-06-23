@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    //<dependency>
+    //      <groupId>com.google.code.gson</groupId>
+    //      <artifactId>gson</artifactId>
+    //      <version>2.8.6</version>
+    //      <scope>compile</scope>
+    //    </dependency>
+
+    //    <dependency>
+    //      <groupId>com.squareup.okhttp3</groupId>
+    //      <artifactId>okhttp</artifactId>
+    //      <version>4.9.1</version>
+    //      <scope>compile</scope>
+    //    </dependency>
+
+    //    <dependency>
+    //      <groupId>org.jetbrains.kotlin</groupId>
+    //      <artifactId>kotlin-stdlib</artifactId>
+    //      <version>1.4.21</version>
+    //      <scope>compile</scope>
+    //    </dependency>
+
+    api 'com.google.code.gson:gson:2.8.6'
+    compile 'com.squareup.okhttp3:okhttp:4.9.1'
+    provided 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compileOnly 'androidx.appcompat:appcompat:1.0.0'
+
+
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+}
+
+apply plugin: 'maven'
+def MAVEN_LOCAL_PATH = uri(project.rootDir.path + "/local_repo")
+//'http://remote.server:8081/nexus/content/repositories/jdd_android_maven/'
+def GROUP_ID = 'a.b.c'
+def ARTIFACT_ID = "yyy"
+def VERSION_NAME = "1.0.0"
+
+//脚本：将Lib打成aar包上传至maven私有库
+uploadArchives() {
+    repositories {
+        mavenDeployer {
+            repository(url: MAVEN_LOCAL_PATH) {
+            }
+            pom.project {
+                groupId GROUP_ID
+                artifactId ARTIFACT_ID
+                version VERSION_NAME
+                packaging 'aar'
+            }
+        }
+    }
+}

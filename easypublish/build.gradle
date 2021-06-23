@@ -18,7 +18,7 @@ dependencies {
 
 
 def ARTIFACT_ID = 'easy-publish'
-def VERSION_NAME = '1.1.0'
+def VERSION_NAME = '1.2.0'
 def GROUP_ID = 'io.github.leobert-lan'
 
 
@@ -67,12 +67,6 @@ afterEvaluate {
                     name = ARTIFACT_ID
                     description = ARTIFACT_ID
                     url = siteUrl
-//                licenses {
-//                    license {
-//                        name='The Apache Software License, Version 2.0'
-//                        url='http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    }
-//                }
                     licenses {
                         license {
                             name = 'Apache 2.0'

@@ -1,5 +1,7 @@
 package osp.leobert.maven.publish.bean;
 
+import org.gradle.api.Action;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -92,10 +94,26 @@ public class EasyPublish {
             mDevelopers.add(developer);
     }
 
+    public void developer(Action<Developer> action) {
+        if (action == null) return;
+        Developer developer = new Developer();
+        action.execute(developer);
+        if (!mDevelopers.contains(developer))
+            mDevelopers.add(developer);
+    }
+
     public void artifact(Closure closures) {
         if (closures == null) return;
         Tmp artifact = new Tmp();
         org.gradle.util.ConfigureUtil.configure(closures, artifact);
+        if (!artifactsAppend.contains(artifact.value))
+            artifactsAppend.add(artifact.value);
+    }
+
+    public void artifact(Action<Tmp> action) {
+        if (action == null) return;
+        Tmp artifact = new Tmp();
+        action.execute(artifact);
         if (!artifactsAppend.contains(artifact.value))
             artifactsAppend.add(artifact.value);
     }

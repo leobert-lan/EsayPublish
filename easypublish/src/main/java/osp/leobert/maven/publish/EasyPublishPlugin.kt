@@ -1,4 +1,5 @@
 @file:Suppress("deprecation")
+
 package osp.leobert.maven.publish
 
 import org.gradle.api.Plugin
@@ -14,6 +15,7 @@ import org.gradle.api.plugins.MavenPluginConvention
 import org.gradle.api.plugins.PluginContainer
 import org.gradle.api.publication.maven.internal.MavenFactory
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import org.gradle.api.tasks.bundling.Jar
@@ -31,7 +33,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
     var signExtension: SigningExtension? = null
 
 
-    @Suppress("PrivateApi","Unchecked")
+    @Suppress("PrivateApi", "Unchecked")
     override fun apply(project: ProjectInternal) {
         Logger.info("hello,I'am easy-publish")
 
@@ -198,7 +200,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
                 MavenPublication::class.java
             ) { publication ->
 
-                if (!isAndroid)
+                if (!easyPublish.notStandardJavaComponent)
                     publication.from(project.components.getByName("java"))
 
 
@@ -264,8 +266,10 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
                         )
                     }
 
-//                    if (isAndroid)
-//                        project.configurations.getByName()
+
+                    if (easyPublish.notStandardJavaComponent) {
+                        applyPomDeps(pom = pom, project = project)
+                    }
                 }
             }
         }
@@ -287,6 +291,36 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
         signExtension?.sign(
             publishingExtension.publications.findByName("easyMavenPublish")
         )
+    }
+
+    private val scopeMapping = mapOf<String, String?>(
+        "api" to "compile",
+        "implementation" to "compile",
+        "compile" to "compile"
+    )
+
+    private fun applyPomDeps(pom: MavenPom, project: Project) {
+        pom.withXml { xml ->
+
+            val dependenciesNode = xml.asNode().appendNode("dependencies")
+
+            //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+            scopeMapping.keys.forEach { key ->
+
+                try {
+                    project.configurations.getByName(key).allDependencies?.forEach { dependency ->
+                        val dependencyNode = dependenciesNode.appendNode("dependency")
+                        dependencyNode.appendNode("groupId", dependency.group)
+                        dependencyNode.appendNode("artifactId", dependency.name)
+                        dependencyNode.appendNode("version", dependency.version)
+                        dependencyNode.appendNode("scope", scopeMapping[key])
+                    }
+                } catch (thr: Throwable) {
+
+                }
+            }
+
+        }
     }
 
     private fun configureAndroidScopeMappings(
