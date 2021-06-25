@@ -86,6 +86,8 @@ public class EasyPublish {
 
     public boolean needSign = true;
 
+    public boolean notStandardJavaComponent = true;
+
     public void developer(Closure closures) {
         if (closures == null) return;
         Developer developer = new Developer();
@@ -139,6 +141,7 @@ public class EasyPublish {
                 ", siteUrl='" + siteUrl + '\'' + end +
                 ", gitUrl='" + gitUrl + '\'' + end +
                 ", mavenRepoUrl='" + mavenRepoUrl + '\'' + end +
+                ", notStandardJavaComponent='" + notStandardJavaComponent + '\'' + end +
                 '}';
     }
 }
