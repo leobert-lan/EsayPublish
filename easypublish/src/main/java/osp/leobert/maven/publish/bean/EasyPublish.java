@@ -88,13 +88,13 @@ public class EasyPublish {
 
     public boolean notStandardJavaComponent = true;
 
-    public void developer(Closure closures) {
-        if (closures == null) return;
-        Developer developer = new Developer();
-        org.gradle.util.ConfigureUtil.configure(closures, developer);
-        if (!mDevelopers.contains(developer))
-            mDevelopers.add(developer);
-    }
+//    public void developer(Closure closures) {
+//        if (closures == null) return;
+//        Developer developer = new Developer();
+//        org.gradle.util.ConfigureUtil.configure(closures, developer);
+//        if (!mDevelopers.contains(developer))
+//            mDevelopers.add(developer);
+//    }
 
     public void developer(Action<Developer> action) {
         if (action == null) return;
@@ -104,13 +104,13 @@ public class EasyPublish {
             mDevelopers.add(developer);
     }
 
-    public void artifact(Closure closures) {
-        if (closures == null) return;
-        Tmp artifact = new Tmp();
-        org.gradle.util.ConfigureUtil.configure(closures, artifact);
-        if (!artifactsAppend.contains(artifact.value))
-            artifactsAppend.add(artifact.value);
-    }
+//    public void artifact(Closure closures) {
+//        if (closures == null) return;
+//        Tmp artifact = new Tmp();
+//        org.gradle.util.ConfigureUtil.configure(closures, artifact);
+//        if (!artifactsAppend.contains(artifact.value))
+//            artifactsAppend.add(artifact.value);
+//    }
 
     public void artifact(Action<Tmp> action) {
         if (action == null) return;

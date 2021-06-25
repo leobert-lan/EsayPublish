@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'kotlin'
-    id 'signing'
+//    id 'signing'
     id 'maven-publish'
 }
 
@@ -18,7 +18,7 @@ dependencies {
 
 
 def ARTIFACT_ID = 'easy-publish'
-def VERSION_NAME = '1.2.0'
+def VERSION_NAME = '1.2.1'
 def GROUP_ID = 'io.github.leobert-lan'
 
 
@@ -100,7 +100,7 @@ afterEvaluate {
         }
     }
 
-    signing {
-        sign publishing.publications.mavenAndroid
-    }
+//    signing {
+//        sign publishing.publications.mavenAndroid
+//    }
 }
