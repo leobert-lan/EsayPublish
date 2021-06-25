@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'kotlin'
-//    id 'signing'
+    id 'signing'
     id 'maven-publish'
 }
 
@@ -100,7 +100,7 @@ afterEvaluate {
         }
     }
 
-//    signing {
-//        sign publishing.publications.mavenAndroid
-//    }
+    signing {
+        sign publishing.publications.mavenAndroid
+    }
 }
