@@ -13,7 +13,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.MavenPlugin.*
 import org.gradle.api.plugins.MavenPluginConvention
 import org.gradle.api.plugins.PluginContainer
-import org.gradle.api.publication.maven.internal.MavenFactory
+//import org.gradle.api.publication.maven.internal.MavenFactory
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
@@ -40,7 +40,7 @@ class EasyPublishPlugin : Plugin<ProjectInternal> {
 
         project.pluginManager.apply(BasePlugin::class.java)
 
-        val mavenFactory: MavenFactory = project.services.get(MavenFactory::class.java)
+        val mavenFactory: MavenPublication/*MavenFactory*/ = project.services.get(MavenFactory::class.java)
         val pluginConvention: MavenPluginConvention = addConventionObject(project, mavenFactory)
 
 
